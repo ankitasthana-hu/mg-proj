@@ -1,0 +1,25 @@
+Created my own Jenkins Instance in free tier account for manual and automated CD pipeline.
+
+Successfully Meet all Scopes
+=============================
+1) Select a coding language of your choice. (Python, Bash, C, C++, C#, Go, Java, ...)
+Response --- Selected Python Version 3.X 
+
+2) Write the code for fetching the data, and creating the human-readable output. 
+Response --- fetchrecord.py script is actually fetching record for all or single user along with proper error handling in case single user id is missing. Data outputted in CSV with readable format.
+
+3) Write tests, which should validate, that you code is working
+Response -- test_fetchrecord.py includes custom test cases where two test cases imported from main script ( fetchrecord.py ) and 3 are custom cases with assertion on data quality.
+It includes two test types : Integration ( to check connectivity ) and Data ( received data checkpoint ).
+
+4) Create a pipeline which is performing the generation of the output
+Response ---  CD pipeline created which take input from user to pass either All ( all user data ) and Single ( with single user ID ) and received data in CSV format as Jenkins artifact on console.
+Please find snapshot from my personal Jenkins instance.
+
+5) Create a pipeline which runs "on commit" the tests.
+Response --- 
+Create multi branch pipelines with two features - changeset and commit difference on specific test file ( test_fetchrecord.py ).
+Create a pipeline which runs "on commit" the tests.
+
+
+
