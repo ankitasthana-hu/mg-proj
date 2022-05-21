@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+    environment {
+        repo_url = "https://github.com/ankitasthana-hu/mg-proj.git"
+    }
+    parameters {
+        choice(choices: 'All\nSingle', description: 'GET call from API for ALL or Single User', name: 'OPERATION')
+        string(defaultValue: "2", description: 'Enter User ID only optional in case OPERATION selected Single_User', name: 'USER_ID')
+    }
+    stages {
+        stage('Preparation') {
+            steps {
+                sh 'python3 --version'
+                sh 'python3 -m pip -V'
+                echo "${params.OPERATION}"
+                echo "${params.USER_ID}"
+            }
+        }
+
+        stage('Git Clone') {
+            steps {
+                 git branch: 'main', url: "${repo_url}"
+                 sh "ls -lrta"
+            }
+        }
+        stage('Run Unit/Integration Test') {
+            steps {
+                 sh """
+                 cd ${WORKSPACE}
+                 ls -lrta
+                 python3 -m pip install -r requirements.txt
+                 python3 -m pip show pytest
+                 pytest -v test_fetchrecord.py
+                 """
+            }
+        }
+        stage('Deploy Script to fetch data') {
+            steps {
+                script {
+                    try {
+                       sh "rm -rf out*"
+                     } catch (e) {}
+                }
+                 sh """
+                 cd ${WORKSPACE}
+                 python3 fetchrecord.py ${params.OPERATION} ${params.USER_ID}
+                 ls -lrta 
+                 """
+            }
+        }
+        
+    }
+}
