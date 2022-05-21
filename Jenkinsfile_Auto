@@ -5,12 +5,12 @@ pipeline {
     }
     stages {
         stage('Preparation') {
-           when { changeset "test_fetchrecord.py"}
             steps {
                 sh 'python3 --version'
                 sh 'python3 -m pip -V'
                 echo "${params.OPERATION}"
                 echo "${params.USER_ID}"
+                fileupdatecheck()
             }
         }
 
@@ -33,5 +33,15 @@ pipeline {
                  """
             }
         }
+    }
+}
+
+def fileupdatecheck() {
+    env.GIT_PREVIOUS_COMMIT = sh(returnStdout: true, script: "git rev-parse --short HEAD^ ").trim()
+    env.GIT_CURRENT_COMMIT = sh(returnStdout: true, script: "git rev-parse --short HEAD ").trim()
+    env.GIT_DIFF_COMMIT = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_PREVIOUS_COMMIT} ${env.GIT_CURRENT_COMMIT} test_fetchrecord.py ").trim()
+    echo "Difference on commit with test : env.GIT_DIFF_COMMIT"
+    if (!env.GIT_DIFF_COMMIT?.trim()) {
+      echo "No changes detected on test"
     }
 }
