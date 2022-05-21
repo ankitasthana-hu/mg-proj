@@ -5,6 +5,7 @@ pipeline {
     }
     stages {
         stage('Preparation') {
+           when { changeset "test_fetchrecord.py"}
             steps {
                 sh 'python3 --version'
                 sh 'python3 -m pip -V'
@@ -14,6 +15,7 @@ pipeline {
         }
 
         stage('Git Clone') {
+          when { changeset "test_fetchrecord.py"}
             steps {
                  git branch: 'main', url: "${repo_url}"
                  sh "ls -lrta"
