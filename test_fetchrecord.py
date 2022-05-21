@@ -6,7 +6,6 @@ import fetchrecord
 from fetchrecord import test_APIconnectivity
 from fetchrecord import test_dryrun_fetchdata
 
-
 url = "https://reqres.in/api/users?page=2"
 headers = {
          'Accept': 'application/json',
