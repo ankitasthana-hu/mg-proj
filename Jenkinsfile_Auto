@@ -4,6 +4,12 @@ pipeline {
         repo_url = "https://github.com/ankitasthana-hu/mg-proj.git"
     }
     stages {
+        stage('Git Clone') {
+            steps {
+                 git branch: 'main', url: "${repo_url}"
+                 sh "ls -lrta"
+            }
+        }
         stage('Preparation') {
             steps {
                 sh 'python3 --version'
@@ -11,14 +17,6 @@ pipeline {
                 echo "${params.OPERATION}"
                 echo "${params.USER_ID}"
                 fileupdatecheck()
-            }
-        }
-
-        stage('Git Clone') {
-          when { changeset "test_fetchrecord.py"}
-            steps {
-                 git branch: 'main', url: "${repo_url}"
-                 sh "ls -lrta"
             }
         }
         stage('Run Unit/Integration Test') {
@@ -43,5 +41,6 @@ def fileupdatecheck() {
     echo "Difference on commit with test : env.GIT_DIFF_COMMIT"
     if (!env.GIT_DIFF_COMMIT?.trim()) {
       echo "No changes detected on test"
+      return
     }
 }
