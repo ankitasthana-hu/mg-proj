@@ -87,14 +87,16 @@ def test_singleuserdata():
 if __name__ == '__main__':
     test_APIconnectivity()
     test_dryrun_fetchdata()
-    operation = input("Select Operation : All_Data, Single_User")
+    operation = str(sys.argv[1])
+    #operation = input("Select Operation : All_Data, Single_User")
     print("User selected operation: ", operation)
-    if operation == "Single_User":
-       user_id = input("Enter User_ID")
+    if operation == "Single":
+       #user_id = input("Enter User_ID")
+       user_id = str(sys.argv[2])
        print("User selected user_id: ",user_id)
-    if operation == "All_Data": 
+    if operation == "All": 
             test_alluserdata()   
-    if operation == "Single_User":
+    if operation == "Single":
        try:     
            test_singleuserdata()
        except Exception as e:
