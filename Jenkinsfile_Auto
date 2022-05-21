@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    environment {
+        repo_url = "https://github.com/ankitasthana-hu/mg-proj.git"
+    }
+    stages {
+        stage('Preparation') {
+            steps {
+                sh 'python3 --version'
+                sh 'python3 -m pip -V'
+                echo "${params.OPERATION}"
+                echo "${params.USER_ID}"
+            }
+        }
+
+        stage('Git Clone') {
+            steps {
+                 git branch: 'main', url: "${repo_url}"
+                 sh "ls -lrta"
+            }
+        }
+        stage('Run Unit/Integration Test') {
+            when { changeset "test_fetchrecord.py"}
+            steps {
+                 sh """
+                 cd ${WORKSPACE}
+                 ls -lrta
+                 python3 -m pip install -r requirements.txt
+                 python3 -m pip show pytest
+                 pytest -v test_fetchrecord.py
+                 """
+            }
+        }
+    }
+}
