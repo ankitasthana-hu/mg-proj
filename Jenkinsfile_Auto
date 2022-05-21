@@ -4,12 +4,6 @@ pipeline {
         repo_url = "https://github.com/ankitasthana-hu/mg-proj.git"
     }
     stages {
-        stage('Git Clone') {
-            steps {
-                 git branch: 'main', url: "${repo_url}"
-                 sh "ls -lrta"
-            }
-        }
         stage('Preparation') {
             steps {
                 sh 'python3 --version'
